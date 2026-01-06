@@ -4,9 +4,7 @@ import com.github.alfonsoleandro.mputils.message.MessageSender;
 import com.github.alfonsoleandro.mputils.reloadable.Reloadable;
 import com.github.alfonsoleandro.mputils.sound.SoundSettings;
 import com.github.alfonsoleandro.pointer.Pointer;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashSet;
@@ -18,8 +16,13 @@ public class Settings extends Reloadable {
     private final Pointer plugin;
     private final MessageSender<Message> messageSender;
     private final NamespacedKey pointerNamespacedKey;
+    private boolean trailEnabled;
+    private boolean trailDynamicPoints;
     private int maxPointingDistance;
+    private int trailPoints;
+    private int trailSkipDistance;
     private SoundSettings pointSoundSettings;
+    private Particle trailParticle;
     private Set<Material> transparents;
 
     public Settings(Pointer plugin) {
@@ -46,14 +49,45 @@ public class Settings extends Reloadable {
             }
             this.transparents.add(transparentMaterial);
         }
+        this.trailEnabled = config.getBoolean("particle trail.enabled");
+        this.trailDynamicPoints = config.getBoolean("particle trail.dynamic points");
+        this.trailPoints = config.getInt("particle trail.points");
+        this.trailSkipDistance = config.getInt("particle trail.skip distance");
+        String trailParticleName = config.getString("particle trail.particle");
+        try {
+            this.trailParticle = Particle.valueOf(trailParticleName);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            this.messageSender.send(Bukkit.getConsoleSender(), "&cParticle name \"&f"+trailParticleName+"&c\" is an invalid particle name. Disabling particle trail.");
+            this.trailEnabled = false;
+        }
     }
 
     public NamespacedKey getPointerNamespacedKey() {
         return this.pointerNamespacedKey;
     }
 
+    public boolean isTrailEnabled() {
+        return this.trailEnabled;
+    }
+
+    public boolean isTrailDynamicPoints() {
+        return this.trailDynamicPoints;
+    }
+
     public int getMaxPointingDistance() {
         return this.maxPointingDistance;
+    }
+
+    public int getTrailPoints() {
+        return this.trailPoints;
+    }
+
+    public int getTrailSkipDistance() {
+        return this.trailSkipDistance;
+    }
+
+    public Particle getTrailParticle() {
+        return this.trailParticle;
     }
 
     public SoundSettings getPointSoundSettings() {

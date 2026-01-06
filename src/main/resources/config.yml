@@ -3,5 +3,11 @@ sound:
   name: BLOCK_NOTE_BLOCK_PLING
   volume: 0.3
   pitch: 2
+particle trail:
+  enabled: true
+  particle: FLAME
+  dynamic points: true
+  points: 100
+  skip distance: 3
 transparent blocks:
   - AIR

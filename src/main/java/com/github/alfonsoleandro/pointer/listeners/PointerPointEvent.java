@@ -18,6 +18,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Transformation;
+import org.bukkit.util.Vector;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -56,8 +57,8 @@ public class PointerPointEvent implements Listener {
 
         PersistentDataContainer persistentDataContainer = Objects.requireNonNull(itemInMainHand.getItemMeta()).getPersistentDataContainer();
         if (!persistentDataContainer.has(this.settings.getPointerNamespacedKey(), PersistentDataType.BOOLEAN)
-        || Boolean.FALSE.equals(persistentDataContainer.get(this.settings.getPointerNamespacedKey(), PersistentDataType.BOOLEAN))) {
-          return;
+                || Boolean.FALSE.equals(persistentDataContainer.get(this.settings.getPointerNamespacedKey(), PersistentDataType.BOOLEAN))) {
+            return;
         }
 
         Block block = player.getTargetBlock(this.settings.getTransparents(), this.settings.getMaxPointingDistance());
@@ -66,6 +67,7 @@ public class PointerPointEvent implements Listener {
         }
         highlightBlock(block);
         playSound(player);
+        drawParticleLine(player.getLocation().add(0, 1.5, 0), block.getLocation().add(0.5, 0.5, 0.5));
     }
 
     private void highlightBlock(Block block) {
@@ -103,5 +105,40 @@ public class PointerPointEvent implements Listener {
                 SoundCategory.AMBIENT,
                 pointSoundSettings.getVolume(),
                 pointSoundSettings.getPitch());
+    }
+
+    public void drawParticleLine(Location start, Location end) {
+        if (!this.settings.isTrailEnabled()) {
+            return;
+        }
+        World world = start.getWorld();
+
+        Vector direction = end.toVector().subtract(start.toVector());
+        double length = direction.length();
+
+        int skipDistance = this.settings.getTrailSkipDistance();
+        if (length <= skipDistance) return;
+
+        direction.normalize();
+
+        int points = this.settings.isTrailDynamicPoints() ? (int) length : this.settings.getTrailPoints();
+
+        Location beamStart = start.clone().add(direction.clone().multiply(skipDistance));
+        double beamLength = length - skipDistance;
+
+        double spacing = beamLength / points;
+
+        Particle particle = this.settings.getTrailParticle();
+
+        for (int i = 0; i < points; i++) {
+            Location point = beamStart.clone().add(direction.clone().multiply(spacing * i));
+            world.spawnParticle(
+                    particle,
+                    point,
+                    1,
+                    0, 0, 0,
+                    0
+            );
+        }
     }
 }
