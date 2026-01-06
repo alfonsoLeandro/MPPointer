@@ -1,13 +1,25 @@
+# Maximum distance allowed from the player to the pointed block
 max pointing distance: 100
 sound:
+  # Sound name played. Check https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
   name: BLOCK_NOTE_BLOCK_PLING
+  # Volume of the sound, [0,1]
   volume: 0.3
+  # Pitch for the sound [0,2]
   pitch: 2
+# A beam made up of particles from the player pointing to the pointed block
 particle trail:
   enabled: true
+  # Particle to use for the trail. Check https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Particle.html
   particle: FLAME
-  dynamic points: true
+  # Number of particles to draw in the beam
   points: 100
+  # Should the number of particles be equal to the distance instead of using the number above?
+  dynamic points: true
+  # Amount of blocks that won't be taken into account from the player position, to show particles
+  # Prevents particles in the face of players, and making unnecessary trails for blocks that are too close
   skip distance: 3
+# Block that won't "hide" the pointed block.
+# AIR is a must or otherwise the block in the position of the player's head will be always the pointed block
 transparent blocks:
   - AIR
