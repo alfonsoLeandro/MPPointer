@@ -1,0 +1,25 @@
+name: Pointer
+version: '0.0.1'
+main: com.github.alfonsoleandro.pointer.Pointer
+api-version: '1.21'
+authors: [ lelesape ]
+description: Allow players to point stuff to other players using the middle click
+depend: [ MPUtils ]
+website: https://bit.ly/2mwvHWN
+
+commands:
+  pointer:
+    description: Main command
+    aliases: [ pnt ]
+    usage: "The command was not registered properly"
+
+permissions:
+  Pointer.reload:
+    description: Allows a player to reload the plugin and its files.
+    default: op
+  Pointer.version:
+    description: Allows a player to check the plugins current version.
+    default: op
+  Pointer.use:
+    description: Allows a player to use pointers.
+    default: true

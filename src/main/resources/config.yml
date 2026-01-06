@@ -1,0 +1,7 @@
+max pointing distance: 100
+sound:
+  name: BLOCK_NOTE_BLOCK_PLING
+  volume: 0.3
+  pitch: 2
+transparent blocks:
+  - AIR

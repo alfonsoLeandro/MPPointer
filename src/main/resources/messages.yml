@@ -1,0 +1,8 @@
+prefix: '&7[&cPointers&7]'
+no permission: '&cNo permission'
+unknown command: '&cUnknown command. Try &7/%command% help'
+cannot send console: '&cThat command can only be sent by a player'
+invalid item: '&cYou are not holding a valid pointer item, please choose another item in your main hand'
+pointer set: '&aPointer set! Ready to point'
+pointer removed: '&aPointer removed'
+
